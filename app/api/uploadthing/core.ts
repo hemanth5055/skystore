@@ -25,8 +25,6 @@ export const ourFileRouter = {
     })
     .onUploadComplete(async ({ metadata, file }) => {
       const userId = metadata.userId;
-      console.log("File uploaded by user:", userId);
-      console.log("File details:", file);
       const result = await addFile({
         userId,
         file: {
@@ -37,7 +35,7 @@ export const ourFileRouter = {
         },
       });
       if (result) {
-        return { uploadedBy: userId };
+        return result;
       }
       throw new UploadThingError("Failed to add file to database");
     }),

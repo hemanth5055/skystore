@@ -3,7 +3,7 @@ import React from "react";
 import Space from "./Space";
 
 import Upload from "./Upload";
-import File from "./File";
+import Files from "./Files";
 
 const Home = () => {
   return (
@@ -14,10 +14,7 @@ const Home = () => {
           <Upload></Upload>
         </div>
         {/* files */}
-        <div className="w-full flex flex-wrap gap-4 ">
-          {/* items */}
-          <File></File>
-        </div>
+        <Files></Files>
       </div>
     </FileManagerProvider>
   );
