@@ -7,9 +7,9 @@ const f = createUploadthing();
 
 export const ourFileRouter = {
   skystore: f({
-    image: { maxFileSize: "16MB", maxFileCount: 1 },
-    video: { maxFileSize: "16MB", maxFileCount: 1 },
-    pdf: { maxFileSize: "16MB", maxFileCount: 1 },
+    image: { maxFileSize: "32MB", maxFileCount: 1 },
+    video: { maxFileSize: "32MB", maxFileCount: 1 },
+    pdf: { maxFileSize: "32MB", maxFileCount: 1 },
   })
     .middleware(async ({ files }) => {
       const session = await auth();

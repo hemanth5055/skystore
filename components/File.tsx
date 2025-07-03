@@ -24,7 +24,11 @@ const File = ({
       <div className="flex flex-col">
         <h2 className="text-[20px]">{name}</h2>
         <div className="flex items-center gap-2">
-          <h3 className="text-[12px]">{size / 1000} kb</h3>
+          <h3 className="text-[12px]">
+            {size >= 1024 * 1024
+              ? `${(size / (1024 * 1024)).toFixed(2)} MB`
+              : `${(size / 1024).toFixed(2)} KB`}
+          </h3>
           <h3 className="text-[12px]">{new Date(createdAt).toDateString()}</h3>
         </div>
       </div>

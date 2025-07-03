@@ -5,7 +5,7 @@ import { UploadButton } from "@/utlis/uploadthing";
 import React from "react";
 
 const Upload = () => {
-  const { setFiles } = useFileManager();
+  const { setFiles, setSpaceUsed } = useFileManager();
   return (
     <div className="flex justify-center items-center w-full">
       {/* <div className="px-10 py-2 bg-[#F2F2F2] dark:bg-[#282828] rounded-[10px] cursor-pointer">
@@ -14,7 +14,18 @@ const Upload = () => {
       <UploadButton
         endpoint="skystore"
         onClientUploadComplete={(res) => {
-          setFiles((prev) => [res[0].serverData, ...prev]);
+          const uploaded = res[0].serverData;
+          setFiles((prev) => [uploaded, ...prev]);
+          setSpaceUsed((prev) => {
+            if (uploaded.type.startsWith("image/")) {
+              return { ...prev, imageSize: prev.imageSize + uploaded.size };
+            } else if (uploaded.type.startsWith("video/")) {
+              return { ...prev, videoSize: prev.videoSize + uploaded.size };
+            } else if (uploaded.type === "application/pdf") {
+              return { ...prev, pdfSize: prev.pdfSize + uploaded.size };
+            }
+            return prev; // for other file types
+          });
         }}
         onUploadError={(error: Error) => {
           alert(`ERROR! ${error.message}`);

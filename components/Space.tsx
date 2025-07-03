@@ -1,22 +1,71 @@
-import React from "react";
+"use client";
+
+import { useFileManager } from "@/Context/FileManagerContext";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+
+const MAX_STORAGE = 100 * 1024 * 1024; // 100MB
 
 const Space = () => {
+  const { spaceUsed, setSpaceUsed } = useFileManager();
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchSizes = async () => {
+      try {
+        const res = await axios.get("/api/get-space-used");
+        setSpaceUsed({
+          imageSize: res.data.imageSize || 0,
+          videoSize: res.data.videoSize || 0,
+          pdfSize: res.data.pdfSize || 0,
+        });
+      } catch (error) {
+        console.error("Failed to fetch file sizes:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSizes();
+  }, [setSpaceUsed]);
+
+  const imagePercent = spaceUsed.imageSize / MAX_STORAGE;
+  const videoPercent = spaceUsed.videoSize / MAX_STORAGE;
+  const pdfPercent = spaceUsed.pdfSize / MAX_STORAGE;
+  const totalPercent = imagePercent + videoPercent + pdfPercent;
+
   return (
     <div className="flex flex-col">
       {/* progress-bar */}
       <div className="flex items-center gap-4">
-        <div className="w-[450px] relative my-2 bg-[#F2F2F2] dark:bg-[#282828] h-[15px] rounded-full">
-          <div className="absolute flex items-center">
+        <div className="w-[450px] relative my-2 bg-[#F2F2F2] dark:bg-[#282828] h-[15px] rounded-full overflow-hidden">
+          <div className="absolute flex items-center h-full left-0 top-0">
             {/* images */}
-            <div className="w-[100px] relative bg-[#ECBD7C] h-[15px] rounded-l-full"></div>
+            <div
+              className="bg-[#ECBD7C] h-[15px] relative"
+              style={{ width: `${imagePercent * 450}px` }}
+            />
             {/* videos */}
-            <div className="w-[50px] relative bg-[#A0C9DC] h-[15px] "></div>
+            <div
+              className="bg-[#A0C9DC] h-full"
+              style={{ width: `${videoPercent * 450}px` }}
+            />
             {/* pdfs */}
-            <div className="w-[50px] relative bg-[#DCA0A0] h-[15px] rounded-r-full"></div>
+            <div
+              className="bg-[#DCA0A0] h-full"
+              style={{ width: `${pdfPercent * 450}px` }}
+            />
           </div>
         </div>
-        <h2>68%</h2>
+        {loading ? (
+          <div className="w-5 h-5 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
+        ) : (
+          <h2 className="min-w-[50px] font-semibold">
+            {Math.min(totalPercent * 100, 100).toFixed(0)}%
+          </h2>
+        )}
       </div>
+
       {/* legend */}
       <div className="flex items-center gap-4">
         <div className="flex items-center gap-2">

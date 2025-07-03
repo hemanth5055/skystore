@@ -10,14 +10,16 @@ import React, {
 type FileManagerContextType = {
   files: any[];
   setFiles: Dispatch<SetStateAction<any[]>>;
-  spaceUsed: number;
-  setSpaceUsed: Dispatch<SetStateAction<number>>;
+  spaceUsed: { imageSize: number; videoSize: number; pdfSize: number };
+  setSpaceUsed: Dispatch<
+    SetStateAction<{ imageSize: number; videoSize: number; pdfSize: number }>
+  >;
 };
 
 const FileManagerContext = createContext<FileManagerContextType>({
   files: [],
   setFiles: () => {},
-  spaceUsed: 0,
+  spaceUsed: { imageSize: 0, videoSize: 0, pdfSize: 0 },
   setSpaceUsed: () => {},
 });
 
@@ -27,7 +29,11 @@ export function FileManagerProvider({
   children: React.ReactNode;
 }) {
   const [files, setFiles] = useState<any[]>([]);
-  const [spaceUsed, setSpaceUsed] = useState<number>(0);
+  const [spaceUsed, setSpaceUsed] = useState({
+    imageSize: 0,
+    videoSize: 0,
+    pdfSize: 0,
+  });
 
   return (
     <FileManagerContext.Provider
