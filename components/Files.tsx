@@ -19,8 +19,8 @@ const Files = () => {
     };
 
     fetchFiles();
-  }, []);
-  
+  });
+
   return (
     <div className="w-full flex flex-wrap gap-4 ">
       {loading && (
@@ -28,7 +28,7 @@ const Files = () => {
       )}
       {!loading && files.length === 0 && (
         <div className="w-full flex justify-center items-center">
-          <h2 className="text-red-500">No files found</h2>
+          <h2 className="text-red-500 mt-5">Go ahead and upload some files</h2>
         </div>
       )}
       {files.map((file, index) => {
@@ -40,9 +40,7 @@ const Files = () => {
             size={file.size}
             url={file.url}
             createdAt={file.createdAt}
-            id={file.id}
             type={file.type}
-            userId={file.userId}
           ></File>
         );
       })}

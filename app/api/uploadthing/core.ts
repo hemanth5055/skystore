@@ -14,6 +14,8 @@ export const ourFileRouter = {
     .middleware(async ({ files }) => {
       const session = await auth();
       if (!session) throw new UploadThingError("Unauthorized");
+      if (!session.user || !session.user.id)
+        throw new UploadThingError("Invalid");
       const free = await userFreespace(session.user.id);
       const incomingSize = files.reduce((acc, file) => acc + file.size, 0);
       if (free < incomingSize) {
@@ -28,7 +30,7 @@ export const ourFileRouter = {
       if (!isFileThere) return { userId: session.user.id };
       throw new UploadThingError("File already exists !");
     })
-    .onUploadComplete(async ({ metadata, file }) => {
+    .onUploadComplete(async ({ metadata, file }): Promise<any> => {
       const userId = metadata.userId;
       const result = await addFile({
         userId,

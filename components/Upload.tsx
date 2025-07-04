@@ -7,17 +7,22 @@ import toast from "react-hot-toast";
 
 const Upload = () => {
   const { setFiles, setSpaceUsed } = useFileManager();
+
   return (
     <div className="flex justify-center items-center w-full">
-      {/* <div className="px-10 py-2 bg-[#F2F2F2] dark:bg-[#282828] rounded-[10px] cursor-pointer">
-        Upload
-      </div> */}
       <UploadButton
+        className="mt-4 ut-button:bg-blue-500 ut-button:ut-uploading:bg-gray-500/50 ut-button:outline-none"
         endpoint="skystore"
         onClientUploadComplete={(res) => {
-          const uploaded = res[0].serverData;
+          const uploaded = res?.[0]?.serverData;
+          if (!uploaded) {
+            toast.error("Upload failed. Try again.");
+            return;
+          }
+
           toast.success("File uploaded successfully");
           setFiles((prev) => [uploaded, ...prev]);
+
           setSpaceUsed((prev) => {
             if (uploaded.type.startsWith("image/")) {
               return { ...prev, imageSize: prev.imageSize + uploaded.size };
@@ -26,13 +31,18 @@ const Upload = () => {
             } else if (uploaded.type === "application/pdf") {
               return { ...prev, pdfSize: prev.pdfSize + uploaded.size };
             }
-            return prev; // for other file types
+            return prev;
           });
         }}
         onUploadError={(error: Error) => {
-          toast.error(`${error.message}`);
+          toast.error(error.message || "Upload error");
         }}
-      ></UploadButton>
+        content={{
+          allowedContent() {
+            return "Max size 32MB";
+          },
+        }}
+      />
     </div>
   );
 };

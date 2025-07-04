@@ -20,18 +20,14 @@ const File = ({
   size,
   createdAt,
   fileKey,
-  id,
   type,
-  userId,
 }: {
   name: string;
   url: string;
   size: number;
   fileKey: string;
   createdAt: Date;
-  id: string;
   type: string;
-  userId: string;
 }) => {
   const { handleDelete } = useFileManager();
   const [isRenameWindowOpen, setRenameWindow] = useState(false);

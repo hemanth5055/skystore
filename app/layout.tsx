@@ -10,8 +10,8 @@ const mont = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Skystore",
-  description: "Mini File manager",
+  title: "SkyStore",
+  description: "A minimal cloud-based file manager",
 };
 
 export default function RootLayout({

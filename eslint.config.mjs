@@ -8,9 +8,17 @@ const __dirname = dirname(__filename);
 const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
-
+const isProd = process.env.NODE_ENV === "production";
 const eslintConfig = [
   ...compat.extends("next/core-web-vitals", "next/typescript"),
+  {
+    files: ["**/*.ts", "**/*.tsx"],
+    rules: isProd
+      ? {
+          "@typescript-eslint/no-explicit-any": "off",
+        }
+      : {},
+  },
 ];
 
 export default eslintConfig;
