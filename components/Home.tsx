@@ -11,7 +11,7 @@ const Home = () => {
     <FileManagerProvider>
       <Toaster position="top-center" reverseOrder={false} />
       <div className="w-full flex flex-col">
-        <div className="w-full flex justify-between items-center mb-7">
+        <div className="w-full flex justify-between items-center mb-7 max-sm:flex-col max-sm:gap-6">
           <Space></Space>
           <Upload></Upload>
         </div>

@@ -35,10 +35,10 @@ const Space = () => {
   const totalPercent = imagePercent + videoPercent + pdfPercent;
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col max-sm:w-full">
       {/* progress-bar */}
-      <div className="flex items-center gap-4">
-        <div className="w-[450px] relative my-2 bg-[#F2F2F2] dark:bg-[#282828] h-[15px] rounded-full overflow-hidden">
+      <div className="flex items-center gap-4 ">
+        <div className="w-[450px] max-sm:w-full relative my-2 bg-[#F2F2F2] dark:bg-[#282828] h-[15px] rounded-full overflow-hidden">
           <div className="absolute flex items-center h-full left-0 top-0">
             {/* images */}
             <div
