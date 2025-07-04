@@ -38,3 +38,13 @@ export async function userFreespace(userId: string): Promise<number> {
 
   return free > 0 ? free : 0;
 }
+
+export async function fileAlreadyExists(fileName: string, userId: string) {
+  const file = prisma.file.findFirst({
+    where: {
+      name: fileName,
+      userId,
+    },
+  });
+  return file;
+}

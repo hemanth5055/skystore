@@ -30,7 +30,7 @@ const Upload = () => {
           });
         }}
         onUploadError={(error: Error) => {
-          toast.error(`ERROR! ${error.message}`);
+          toast.error(`${error.message}`);
         }}
       ></UploadButton>
     </div>

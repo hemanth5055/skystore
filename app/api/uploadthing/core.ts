@@ -1,7 +1,7 @@
 import { createUploadthing, type FileRouter } from "uploadthing/next";
 import { UploadThingError } from "uploadthing/server";
 import { auth } from "@/auth";
-import { addFile, userFreespace } from "@/actions/file";
+import { addFile, fileAlreadyExists, userFreespace } from "@/actions/file";
 
 const f = createUploadthing();
 
@@ -21,7 +21,12 @@ export const ourFileRouter = {
           "You have exceeded your storage limit of 100MB"
         );
       }
-      return { userId: session.user.id };
+      const isFileThere = await fileAlreadyExists(
+        files[0].name,
+        session.user.id
+      );
+      if (!isFileThere) return { userId: session.user.id };
+      throw new UploadThingError("File already exists !");
     })
     .onUploadComplete(async ({ metadata, file }) => {
       const userId = metadata.userId;
@@ -32,7 +37,7 @@ export const ourFileRouter = {
           size: file.size,
           type: file.type,
           url: file.ufsUrl,
-          key:file.key
+          key: file.key,
         },
       });
       if (result) {
