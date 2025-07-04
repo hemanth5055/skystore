@@ -3,6 +3,7 @@
 import { useFileManager } from "@/Context/FileManagerContext";
 import { UploadButton } from "@/utlis/uploadthing";
 import React from "react";
+import toast from "react-hot-toast";
 
 const Upload = () => {
   const { setFiles, setSpaceUsed } = useFileManager();
@@ -15,6 +16,7 @@ const Upload = () => {
         endpoint="skystore"
         onClientUploadComplete={(res) => {
           const uploaded = res[0].serverData;
+          toast.success("File uploaded successfully");
           setFiles((prev) => [uploaded, ...prev]);
           setSpaceUsed((prev) => {
             if (uploaded.type.startsWith("image/")) {
@@ -28,7 +30,7 @@ const Upload = () => {
           });
         }}
         onUploadError={(error: Error) => {
-          alert(`ERROR! ${error.message}`);
+          toast.error(`ERROR! ${error.message}`);
         }}
       ></UploadButton>
     </div>

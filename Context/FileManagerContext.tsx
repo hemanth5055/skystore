@@ -8,6 +8,7 @@ import React, {
   Dispatch,
   SetStateAction,
 } from "react";
+import toast from "react-hot-toast";
 
 // Context type definition
 type FileManagerContextType = {
@@ -43,17 +44,21 @@ export function FileManagerProvider({
   });
 
   const handleDelete = async (fileKey: string) => {
-    try {
-      const res = await axios.delete(`/api/delete-file/${fileKey}`); // Assuming this is your route
-      if (res.data?.success) {
-        console.log("File deleted successfully");
-        setFiles((prev) => prev.filter((file) => file.fileKey !== fileKey));
-      } else {
-        console.log("Failed to delete");
-      }
-    } catch (error) {
-      console.error("Delete error:", error);
-    }
+    await toast
+      .promise(axios.delete(`/api/delete-file/${fileKey}`), {
+        loading: "Deleting file...",
+        success: "File deleted successfully",
+        error: "Failed to delete file",
+      })
+      .then((res) => {
+        if (res.data?.success) {
+          setFiles((prev) => prev.filter((file) => file.fileKey !== fileKey));
+        }
+      })
+      .catch((err) => {
+        // Optional: additional logging
+        console.error("Delete error:", err);
+      });
   };
 
   return (
