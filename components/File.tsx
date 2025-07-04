@@ -82,6 +82,7 @@ const File = ({
       {isRenameWindowOpen ? (
         <Rename
           previousName={name}
+          fileKey={fileKey}
           onClose={() => setRenameWindow(false)}
         ></Rename>
       ) : (

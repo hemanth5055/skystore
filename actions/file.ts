@@ -48,3 +48,17 @@ export async function fileAlreadyExists(fileName: string, userId: string) {
   });
   return file;
 }
+
+export async function changeName(fileKey: string, newName: string) {
+  const res = await prisma.file.update({
+    where: { fileKey },
+    data: { name: newName },
+  });
+  return res;
+}
+export async function findFileByName(name: string) {
+  const res = await prisma.file.findFirst({
+    where: { name },
+  });
+  return res;
+}
