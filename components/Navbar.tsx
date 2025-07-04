@@ -23,7 +23,7 @@ const Navbar = async () => {
         }}
       >
         <button
-          className="w-[45px] h-[45px] cursor-pointer rounded-full flex justify-center items-center dark:bg-[#282828]"
+          className="w-[45px] h-[45px] cursor-pointer bg-[#f2f2f2] rounded-full flex justify-center items-center dark:bg-[#282828]"
           type="submit"
         >
           <FiLogOut size={18}></FiLogOut>

@@ -1,4 +1,5 @@
 "use client";
+import { useFileManager } from "@/Context/FileManagerContext";
 import React from "react";
 import { IoArrowBack } from "react-icons/io5";
 import { LuTrash } from "react-icons/lu";
@@ -7,6 +8,7 @@ const File = ({
   url,
   size,
   createdAt,
+  fileKey,
   id,
   type,
   userId,
@@ -14,11 +16,14 @@ const File = ({
   name: string;
   url: string;
   size: number;
+  fileKey: string;
   createdAt: Date;
   id: string;
   type: string;
   userId: string;
 }) => {
+  const { handleDelete } = useFileManager();
+
   return (
     <div className="flex items-center p-5 bg-[#F2F2F2] dark:bg-[#282828] rounded-[15px] gap-4">
       <div className="flex flex-col">
@@ -38,7 +43,10 @@ const File = ({
             <IoArrowBack size={23} />
           </div>
         </a>
-        <div className="w-[40px] h-[40px] cursor-pointer flex items-center justify-center">
+        <div
+          className="w-[40px] h-[40px] cursor-pointer flex items-center justify-center"
+          onClick={() => handleDelete(fileKey)}
+        >
           <LuTrash size={20} />
         </div>
       </div>

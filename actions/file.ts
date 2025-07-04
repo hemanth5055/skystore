@@ -12,6 +12,7 @@ export async function addFile({ file, userId }: { file: any; userId: string }) {
       type: file.type,
       url: file.url,
       userId: userId,
+      fileKey: file.key,
     },
   });
   const updateUserSpaceUsed = await prisma.user.update({

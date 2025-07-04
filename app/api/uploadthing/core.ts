@@ -32,6 +32,7 @@ export const ourFileRouter = {
           size: file.size,
           type: file.type,
           url: file.ufsUrl,
+          key:file.key
         },
       });
       if (result) {

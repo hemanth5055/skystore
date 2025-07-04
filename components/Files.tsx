@@ -20,11 +20,11 @@ const Files = () => {
 
     fetchFiles();
   }, []);
+  
   return (
     <div className="w-full flex flex-wrap gap-4 ">
       {loading && (
         <div className="w-6 h-6 border-2 border-gray-300 border-t-blue-500 rounded-full animate-spin" />
-
       )}
       {!loading && files.length === 0 && (
         <div className="w-full flex justify-center items-center">
@@ -36,6 +36,7 @@ const Files = () => {
           <File
             name={file.name}
             key={index}
+            fileKey={file.fileKey}
             size={file.size}
             url={file.url}
             createdAt={file.createdAt}
