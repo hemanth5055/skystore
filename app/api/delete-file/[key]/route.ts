@@ -28,7 +28,7 @@ export async function DELETE(
         fileKey: key,
       },
     });
-    const removeSpace = await prisma.user.update({
+    await prisma.user.update({
       where: { id: session.user.id },
       data: {
         spaceUsed: {
