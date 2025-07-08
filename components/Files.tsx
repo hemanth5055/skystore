@@ -17,9 +17,8 @@ const Files = () => {
       }
       setLoading(false);
     };
-
     fetchFiles();
-  });
+  }, []);
 
   return (
     <div className="w-full flex flex-wrap gap-4 ">

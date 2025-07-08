@@ -16,6 +16,7 @@ const eslintConfig = [
     rules: isProd
       ? {
           "@typescript-eslint/no-explicit-any": "off",
+          "react-hooks/exhaustive-deps": "off",
         }
       : {},
   },

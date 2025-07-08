@@ -51,8 +51,26 @@ export function FileManagerProvider({
         error: "Failed to delete file",
       })
       .then((res) => {
+        // console.log("Delete response:", res);
         if (res.data?.success) {
           setFiles((prev) => prev.filter((file) => file.fileKey !== fileKey));
+          //update the space used on client side
+          const fileSize = res.data.space.size;
+          const fileType = res.data.space.type;
+          setSpaceUsed((prev) => {
+            return {
+              imageSize: fileType.startsWith("image/")
+                ? prev.imageSize - fileSize
+                : prev.imageSize,
+              videoSize: fileType.startsWith("video/")
+                ? prev.videoSize - fileSize
+                : prev.videoSize,
+              pdfSize:
+                fileType === "application/pdf"
+                  ? prev.pdfSize - fileSize
+                  : prev.pdfSize,
+            };
+          });
         }
       })
       .catch((err) => {

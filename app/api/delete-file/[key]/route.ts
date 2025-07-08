@@ -9,12 +9,11 @@ export async function DELETE(
 ) {
   const session = await auth();
 
-  if (!session) {
+  if (!session || !session.user) {
     console.log("Unauthorized");
     return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
   }
   const { key } = await params;
-  console.log(key);
   try {
     // 1. Delete the file from UploadThing
     const utDeleteRes = await utapi.deleteFiles(key);
@@ -29,9 +28,17 @@ export async function DELETE(
         fileKey: key,
       },
     });
+    const removeSpace = await prisma.user.update({
+      where: { id: session.user.id },
+      data: {
+        spaceUsed: {
+          decrement: res.size,
+        },
+      },
+    });
     return NextResponse.json({
       success: true,
-      res: res,
+      space: res,
       message: "File deleted successfully",
     });
   } catch (error) {
